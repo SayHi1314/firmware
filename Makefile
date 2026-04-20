@@ -4,6 +4,7 @@ BR_LINK = https://github.com/buildroot/buildroot/archive
 BR_FILE = /tmp/buildroot-$(BR_VER).tar.gz
 BR_CONF = $(TARGET)/openipc_defconfig
 TARGET ?= $(PWD)/output
+BR_JLEVEL ?= $(shell nproc)
 export CMAKE_POLICY_VERSION_MINIMUM := 3.5
 export HOST_CFLAGS ?= -O2 -std=gnu11
 
@@ -25,10 +26,10 @@ endif
 all: build repack timer
 
 build: defconfig
-	@$(BR_MAKE) all -j$(shell nproc)
+	@$(BR_MAKE) BR2_JLEVEL=$(BR_JLEVEL) all
 
 br-%: defconfig
-	@$(BR_MAKE) $(subst br-,,$@) -j$(shell nproc)
+	@$(BR_MAKE) BR2_JLEVEL=$(BR_JLEVEL) $(subst br-,,$@)
 
 defconfig: prepare
 	@echo --- $(or $(CONFIG),$(error variable BOARD not found))
@@ -81,7 +82,7 @@ ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 	@$(MAKE) -f $(PWD)/general/toolchain.mk BR_CONF=$(BR_CONF) CONFIG=$(PWD)/$(CONFIG)
 	@$(BR_MAKE) BR2_DEFCONFIG=$(BR_CONF) defconfig
 endif
-	@$(BR_MAKE) sdk -j$(shell nproc)
+	@$(BR_MAKE) BR2_JLEVEL=$(BR_JLEVEL) sdk
 	@$(call BUNDLE_SDK)
 
 toolchain-asan: defconfig
@@ -92,7 +93,7 @@ ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 endif
 	@echo 'BR2_EXTRA_GCC_CONFIG_OPTIONS="--enable-libsanitizer"' >> $(BR_CONF)
 	@$(BR_MAKE) BR2_DEFCONFIG=$(BR_CONF) defconfig
-	@$(BR_MAKE) sdk -j$(shell nproc)
+	@$(BR_MAKE) BR2_JLEVEL=$(BR_JLEVEL) sdk
 	@$(call BUNDLE_SDK)
 
 repack:

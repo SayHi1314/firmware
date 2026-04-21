@@ -20,4 +20,8 @@ config BR2_OPENIPC_MAJESTIC
 	string "OpenIPC Majestic"
 	default "lite"
 
+config BR2_OPENIPC_MAJESTIC_VERSION
+	string "OpenIPC Majestic version"
+	default "master"
+
 source "$BR2_EXTERNAL_GENERAL_PATH/package/Config.in"

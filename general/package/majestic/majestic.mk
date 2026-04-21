@@ -5,12 +5,13 @@
 ################################################################################
 
 MAJESTIC_SITE = https://openipc.s3-eu-west-1.amazonaws.com
-MAJESTIC_SOURCE = majestic.$(MAJESTIC_FAMILY).$(MAJESTIC_VARIANT).master.tar.bz2
+MAJESTIC_SOURCE = majestic.$(MAJESTIC_FAMILY).$(MAJESTIC_VARIANT).$(MAJESTIC_VERSION).tar.bz2
 MAJESTIC_LICENSE = PROPRIETARY
 MAJESTIC_LICENSE_FILES = LICENSE
 
 MAJESTIC_FAMILY = $(OPENIPC_SOC_FAMILY)
 MAJESTIC_VARIANT = $(OPENIPC_MAJESTIC)
+MAJESTIC_VERSION = $(OPENIPC_MAJESTIC_VERSION)
 
 MAJESTIC_DEPENDENCIES += \
 	libevent-openipc \
